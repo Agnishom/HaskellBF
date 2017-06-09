@@ -1,6 +1,8 @@
 import Data.Either
 import Data.List
 import Data.Char
+import System.Environment
+import System.IO
 
 type Program = [Instruction]
 
@@ -67,6 +69,8 @@ runProgram mem (i:is) = do
 
 main :: IO ()
 main = do
-   prog <- getContents
+   hSetBuffering stdin NoBuffering 
+   (fileName:_) <- getArgs
+   prog <- readFile fileName
    (mem, act) <- runProgram emptyMem (parse (filter (`elem` "[]+-><.,") prog))
    act
